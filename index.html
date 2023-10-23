@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Translation Form</title>
+</head>
+<body>
+  <h1>Translation Form</h1>
+  <form action="/api/translate" method="get">
+    <label for="query">Enter text to translate:</label>
+    <input type="text" name="query" id="query" required>
+    <br>
+    <label for="source_language">Source Language:</label>
+    <input type="text" name="source_language" id="source_language" required>
+    <br>
+    <label for="destination_language">Destination Language:</label>
+    <input type="text" name="destination_language" id="destination_language" required>
+    <br>
+    <button type="submit">Translate</button>
+  </form>
+  <p>Translated Text: <span id="translated-text"></span></p>
+
+  <script>
+    const form = document.querySelector('form');
+    const translatedText = document.getElementById('translated-text');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const query = form.querySelector('#query').value;
+      const source_language = form.querySelector('#source_language').value;
+      const destination_language = form.querySelector('#destination_language').value;
+      const url = `/api/translate?query=${query}&source_language=${source_language}&destination_language=${destination_language}`;
+
+      try {
+        const response = await fetch(url);
+        const data = await response.json();
+        translatedText.textContent = data.translation;
+      } catch (error) {
+        console.error(error);
+      }
+    });
+  </script>
+</body>
+</html>
